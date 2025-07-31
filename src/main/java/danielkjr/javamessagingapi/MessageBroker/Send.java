@@ -5,7 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class Send {
-    private final static String QUEUE_NAME = "Database";
+    private final static String QUEUE_NAME = "rpc";
     public static void send(){
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("rabbitmq");

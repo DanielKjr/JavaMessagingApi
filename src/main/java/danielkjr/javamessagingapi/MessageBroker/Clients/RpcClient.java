@@ -1,11 +1,14 @@
 package danielkjr.javamessagingapi.MessageBroker.Clients;
 
 
+import danielkjr.javamessagingapi.Model.MQAction;
+import danielkjr.javamessagingapi.controllers.StoreCommand;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class RpcClient {
@@ -30,4 +33,15 @@ public class RpcClient {
                 (exchange.getName(), "rpc", start++);
         System.out.println(" [.] Got '" + response + "'");
     }
+
+    @Scheduled(fixedDelay = 1000, initialDelay = 500)
+    public void createAndDispatch(String message) {
+        UUID actionId = UUID.randomUUID();
+        StoreCommand command = new StoreCommand(actionId, message, MQAction.CREATE);
+        UUID response = (UUID) template.convertSendAndReceive(exchange.getName(), "rpc", command);
+        System.out.println(exchange.getName() + " sent to " + actionId + "with command:" + command);
+        System.out.println("Response: "+response);
+    }
+
+
 }

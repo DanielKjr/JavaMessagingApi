@@ -5,7 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class Receive {
-    public final static String QUEUE_NAME = "Database";
+    public final static String QUEUE_NAME = "rpc.receive";
 
     public static void receive(){
         ConnectionFactory factory = new ConnectionFactory();
