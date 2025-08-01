@@ -1,8 +1,8 @@
-package danielkjr.javamessagingapi.MessageBroker.Clients;
+package danielkjr.mqlistener.Services;
 
 
-import danielkjr.javamessagingapi.Model.MQAction;
-import danielkjr.javamessagingapi.Model.StoreCommand;
+import danielkjr.mqlistener.Model.MQAction;
+import danielkjr.mqlistener.Model.StoreCommand;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,6 +23,7 @@ public class RpcClient {
         this.template = rabbitTemplate;
         this.exchange = directExchange;
     }
+
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void createAndDispatch(String message) {
         UUID actionId = UUID.randomUUID();
