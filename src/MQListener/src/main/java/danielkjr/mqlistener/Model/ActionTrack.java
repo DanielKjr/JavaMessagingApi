@@ -1,25 +1,31 @@
-package danielkjr.javamessagingapi.Model;
+package danielkjr.mqlistener.Model;
 
 
-//@Entity
-//@Table(name = "Actions", schema = "Messaging")
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
+
+import java.util.UUID;
+
+@Entity
+@Table(name = "Actions", schema = "Messaging")
 public class ActionTrack {
 
-//    @Id
-//    @GeneratedValue
-//    private UUID id;
+    @Id
+    @GeneratedValue
+    private UUID id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "entry_id")
-//    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "entry_id")
+    @JsonBackReference
     private PlaceHolderEntry entry;
 
-//    @Column(name = "Status")
-//    @Enumerated(EnumType.STRING)
+    @Column(name = "Status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-//    @Column(name = "CurrentAction")
-//    @Enumerated(EnumType.STRING)
+    @Column(name = "CurrentAction")
+    @Enumerated(EnumType.STRING)
     private MQAction currentAction;
 
     public MQAction getCurrentAction() {
@@ -30,9 +36,9 @@ public class ActionTrack {
         this.currentAction = currentAction;
     }
 
-//    public UUID getId() {
-//        return id;
-//    }
+    public UUID getId() {
+        return id;
+    }
 
     public Status getStatus() {
         return status;
@@ -50,9 +56,9 @@ public class ActionTrack {
         this.entry = entry;
     }
 
-//    public void setId(UUID id) {
-//        this.id = id;
-//    }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
 
     public ActionTrack() {}

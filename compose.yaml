@@ -24,18 +24,32 @@ services:
       retries: 5
 
   server:
+    container_name: javamessagingapi
     build:
       context: .
     ports:
       - "8160:8080"
-      - "5005:5005"
+#      - "5005:5005"
     environment:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+#      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     depends_on:
       rabbitmq:
         condition: service_healthy
 
+  mqlistener:
+    container_name: mqlistener
+    build:
+      context: ./src/MQListener
+    ports:
+      - "8099:8099"
+      - "5005:5005"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
 #  volumes:
 #    rabbitmq_data:
 

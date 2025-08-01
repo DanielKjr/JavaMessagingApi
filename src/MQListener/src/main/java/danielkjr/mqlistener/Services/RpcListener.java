@@ -1,9 +1,10 @@
-package danielkjr.javamessagingapi.MessageBroker.Servers;
+package danielkjr.mqlistener.Services;
 
-import danielkjr.javamessagingapi.Model.ActionTrack;
-import danielkjr.javamessagingapi.Model.PlaceHolderEntry;
-import danielkjr.javamessagingapi.Repositories.PlaceHolderEntryRepository;
-import danielkjr.javamessagingapi.controllers.StoreCommand;
+
+import danielkjr.mqlistener.Model.ActionTrack;
+import danielkjr.mqlistener.Model.PlaceHolderEntry;
+import danielkjr.mqlistener.Model.StoreCommand;
+import danielkjr.mqlistener.Repository.PlaceHolderEntryRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 

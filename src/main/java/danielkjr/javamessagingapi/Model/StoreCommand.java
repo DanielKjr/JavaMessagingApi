@@ -1,6 +1,4 @@
-package danielkjr.javamessagingapi.controllers;
-
-import danielkjr.javamessagingapi.Model.MQAction;
+package danielkjr.javamessagingapi.Model;
 
 import java.util.UUID;
 

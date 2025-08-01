@@ -1,17 +1,27 @@
-package danielkjr.javamessagingapi.Model;
+package danielkjr.mqlistener.Model;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
+@Entity
+@Table(name = "PlaceHolderEntries", schema = "Messaging")
 public class PlaceHolderEntry {
 
+    @Id
+    @GeneratedValue
     private UUID id;
 
+    @OneToMany(mappedBy = "entry", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ActionTrack> actions = new ArrayList<>();
 
+    @Column(name = "Message")
     public String message;
 
 
