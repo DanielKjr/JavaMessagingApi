@@ -50,6 +50,9 @@ services:
     environment:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    volumes:
+      - ./src/MQListener/logs:/app/logs
+
 #  volumes:
 #    rabbitmq_data:
 

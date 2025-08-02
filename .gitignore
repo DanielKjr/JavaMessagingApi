@@ -33,3 +33,5 @@ build/
 .vscode/
 /.env
 /data/
+src/MQListener/logs/temp-log.txt
+/src/MQListener/logs

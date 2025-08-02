@@ -1,5 +1,7 @@
 package danielkjr.mqlistener.Configs;
 
+import danielkjr.mqlistener.Utility.NameProvider;
+import danielkjr.mqlistener.Logging.LoggingClient;
 import danielkjr.mqlistener.Repository.PlaceHolderEntryRepository;
 import danielkjr.mqlistener.Services.RpcClient;
 import danielkjr.mqlistener.Services.RpcListener;
@@ -17,6 +19,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,12 +34,38 @@ public class ClientConfig {
         this.entryRepo = entryRepo;
     }
 
+    @Bean
+    public NameProvider nameProvider(org.springframework.core.env.Environment env) {
+        return new NameProvider(env);
+    }
+
+    @Bean
+    public LoggingClient loggingClient(RabbitTemplate rabbitTemplate) {
+        return new LoggingClient(rabbitTemplate);
+    }
+
+    @Bean
+    public RpcListener rpcListener(LoggingClient loggingClient) {
+        return new RpcListener(entryRepo, loggingClient);
+    }
+
+    @Bean
+    public RpcClient rpcClient(RabbitTemplate rabbitTemplate, DirectExchange rpcExchange, NameProvider nameProvider) {
+        return new RpcClient(rabbitTemplate, rpcExchange, nameProvider);
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(messageConverter);
+        template.setReplyTimeout(Duration.ofSeconds(5).toMillis());
+        return template;
+    }
 
     @Bean
     public DirectExchange rpcExchange() {
         return new DirectExchange(EXCHANGE_NAME);
     }
-
 
     @Bean
     public Queue rpcRequestQueue() {
@@ -46,24 +75,6 @@ public class ClientConfig {
     @Bean
     public Binding rpcBinding(Queue rpcRequestQueue, DirectExchange rpcExchange) {
         return BindingBuilder.bind(rpcRequestQueue).to(rpcExchange).with("rpc");
-    }
-
-    @Bean
-    public RpcListener rpcListener() {
-        return new RpcListener(entryRepo);
-    }
-
-    @Bean
-    public RpcClient rpcClient(RabbitTemplate rabbitTemplate, DirectExchange rpcExchange) {
-        return new RpcClient(rabbitTemplate, rpcExchange);
-    }
-
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter);
-        return template;
     }
 
     @Bean
@@ -82,21 +93,33 @@ public class ClientConfig {
         return container;
     }
 
-
     @Bean
     public MessageConverter jacksonMessageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
-
-        // the producer sends a StoreCommand object, as it is in the other project we have to register an alias
-        // for the broker to be able to translate it
         Map<String, Class<?>> idClassMapping = new HashMap<>();
-        idClassMapping.put("danielkjr.javamessagingapi.controllers.StoreCommand", danielkjr.mqlistener.Model.StoreCommand.class);
-
+        // the producer sends a StoreCommand object, as it is in the other project we have to register an alias
+        // for the broker to be able to translate it, same with mqaction
+        idClassMapping.put("danielkjr.javamessagingapi.Model.StoreCommand", danielkjr.mqlistener.Model.StoreCommand.class);
+        idClassMapping.put("danielkjr.javamessagingapi.Model.MQAction", danielkjr.mqlistener.Model.MQAction.class);
         typeMapper.setIdClassMapping(idClassMapping);
         converter.setJavaTypeMapper(typeMapper);
         return converter;
     }
 
+    @Bean
+    public Queue loggingQueue() {
+        return new Queue("logging.queue");
+    }
 
+    @Bean
+    public DirectExchange loggingExchange() {
+        return new DirectExchange("logging.exchange");
+    }
+
+    @Bean
+    public Binding loggingBinding(Queue loggingQueue, DirectExchange loggingExchange) {
+        return BindingBuilder.bind(loggingQueue).to(loggingExchange).with("logging.route");
+    }
 }
+

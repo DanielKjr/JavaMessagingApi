@@ -2,6 +2,7 @@ package danielkjr.javamessagingapi.MessageBroker.Configurations;
 
 
 import danielkjr.javamessagingapi.MessageBroker.Clients.RpcClient;
+import danielkjr.javamessagingapi.Utility.NameProvider;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -12,6 +13,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 //https://www.rabbitmq.com/tutorials/tutorial-six-spring-amqp
 @Configuration
@@ -44,8 +46,8 @@ public class ClientConfig {
 
 
     @Bean
-    public RpcClient rpcClient(RabbitTemplate rabbitTemplate, DirectExchange rpcExchange) {
-        return new RpcClient(rabbitTemplate, rpcExchange);
+    public RpcClient rpcClient(RabbitTemplate rabbitTemplate, DirectExchange rpcExchange, NameProvider nameProvider) {
+        return new RpcClient(rabbitTemplate,nameProvider, rpcExchange);
     }
 
 
