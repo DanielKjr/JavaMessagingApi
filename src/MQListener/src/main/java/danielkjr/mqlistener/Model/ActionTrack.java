@@ -61,7 +61,9 @@ public class ActionTrack {
     }
 
 
-    public ActionTrack() {}
+    public ActionTrack() {
+    }
+
     public ActionTrack(StoreCommand command) {
         this.status = Status.CREATED;
         this.currentAction = command.action();

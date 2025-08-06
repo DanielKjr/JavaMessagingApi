@@ -43,6 +43,22 @@ services:
       context: ./src/MQListener
     ports:
       - "8099:8099"
+#      - "5005:5005"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+#      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+#    volumes:
+#      - ./src/MQListener/logs:/app/logs
+
+  mqlogger:
+    container_name: mqlogger
+    build:
+      context: ./src/MQLogger
+    ports:
+      - "8098:8098"
       - "5005:5005"
     depends_on:
       rabbitmq:
@@ -50,9 +66,6 @@ services:
     environment:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
       - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
-    volumes:
-      - ./src/MQListener/logs:/app/logs
-
 #  volumes:
 #    rabbitmq_data:
 

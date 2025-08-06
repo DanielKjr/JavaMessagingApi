@@ -1,6 +1,8 @@
 package danielkjr.javamessagingapi.controllers;
 
 import danielkjr.javamessagingapi.MessageBroker.Clients.RpcClient;
+import danielkjr.javamessagingapi.Model.dto.MessageDto;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class CommandChainController {
 
 
-
     private final RpcClient rpcClient;
-    public CommandChainController( RpcClient rpcClient) {
+
+    public CommandChainController(RpcClient rpcClient) {
 
         this.rpcClient = rpcClient;
     }
@@ -19,10 +21,9 @@ public class CommandChainController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void newEntry(String message) {
-        rpcClient.createAndDispatch(message);
+    public void newEntry(@RequestBody MessageDto dto) {
+        rpcClient.createAndDispatch(dto);
     }
-
 
 
 }

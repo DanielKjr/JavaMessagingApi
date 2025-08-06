@@ -25,11 +25,25 @@ public class PlaceHolderEntry {
     public String message;
 
 
-    public UUID getId() {return id;}
-    public List<ActionTrack> getActions() {return actions;}
-    public ActionTrack getAction() {return actions.getLast();}
-    public String getMessage() {return message;}
-    public void setMessage(String message) {this.message = message;}
+    public UUID getId() {
+        return id;
+    }
+
+    public List<ActionTrack> getActions() {
+        return actions;
+    }
+
+    public ActionTrack getAction() {
+        return actions.getLast();
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public void addAction(ActionTrack action) {
         action.setEntry(this);
@@ -40,6 +54,8 @@ public class PlaceHolderEntry {
     public PlaceHolderEntry(String message) {
         this.message = message;
     }
-    public PlaceHolderEntry( ) {}
+
+    public PlaceHolderEntry() {
+    }
 
 }

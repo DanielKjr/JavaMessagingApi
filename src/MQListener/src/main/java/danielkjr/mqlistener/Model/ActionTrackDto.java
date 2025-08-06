@@ -11,8 +11,15 @@ public class ActionTrackDto {
 
     private MQAction currentAction;
 
-    public UUID getId() {return id;}
+    public UUID getId() {
+        return id;
+    }
 
-    public Status getStatus() {return status;}
-    public MQAction getCurrentAction() {return currentAction;}
+    public Status getStatus() {
+        return status;
+    }
+
+    public MQAction getCurrentAction() {
+        return currentAction;
+    }
 }

@@ -1,8 +1,11 @@
 package danielkjr.mqlistener.Configs;
 
+import danielkjr.mqlistener.Model.LoggingSeverity;
+import danielkjr.mqlistener.Model.MQAction;
+import danielkjr.mqlistener.Model.StoreCommand;
+import danielkjr.mqlistener.Model.dto.MessageDto;
 import danielkjr.mqlistener.Utility.NameProvider;
 import danielkjr.mqlistener.Logging.LoggingClient;
-import danielkjr.mqlistener.Repository.PlaceHolderEntryRepository;
 import danielkjr.mqlistener.Services.RpcClient;
 import danielkjr.mqlistener.Services.RpcListener;
 import org.springframework.amqp.core.Binding;
@@ -18,6 +21,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -26,16 +30,14 @@ import java.util.Map;
 @Configuration
 public class ClientConfig {
 
-    private final PlaceHolderEntryRepository entryRepo;
     public static final String EXCHANGE_NAME = "rpc";
     public static final String REQUEST_QUEUE = "rpc.requests";
 
-    public ClientConfig(PlaceHolderEntryRepository entryRepo) {
-        this.entryRepo = entryRepo;
+    public ClientConfig() {
     }
 
     @Bean
-    public NameProvider nameProvider(org.springframework.core.env.Environment env) {
+    public NameProvider nameProvider(Environment env) {
         return new NameProvider(env);
     }
 
@@ -44,10 +46,6 @@ public class ClientConfig {
         return new LoggingClient(rabbitTemplate);
     }
 
-    @Bean
-    public RpcListener rpcListener(LoggingClient loggingClient) {
-        return new RpcListener(entryRepo, loggingClient);
-    }
 
     @Bean
     public RpcClient rpcClient(RabbitTemplate rabbitTemplate, DirectExchange rpcExchange, NameProvider nameProvider) {
@@ -100,8 +98,10 @@ public class ClientConfig {
         Map<String, Class<?>> idClassMapping = new HashMap<>();
         // the producer sends a StoreCommand object, as it is in the other project we have to register an alias
         // for the broker to be able to translate it, same with mqaction
-        idClassMapping.put("danielkjr.javamessagingapi.Model.StoreCommand", danielkjr.mqlistener.Model.StoreCommand.class);
-        idClassMapping.put("danielkjr.javamessagingapi.Model.MQAction", danielkjr.mqlistener.Model.MQAction.class);
+        idClassMapping.put("danielkjr.javamessagingapi.Model.StoreCommand", StoreCommand.class);
+        idClassMapping.put("danielkjr.javamessagingapi.Model.MQAction", MQAction.class);
+        idClassMapping.put("danielkjr.javamessagingapi.Model.LoggingSeverity", LoggingSeverity.class);
+        idClassMapping.put("danielkjr.javamessagingapi.Model.dto.MessageDto", MessageDto.class);
         typeMapper.setIdClassMapping(idClassMapping);
         converter.setJavaTypeMapper(typeMapper);
         return converter;
@@ -109,17 +109,17 @@ public class ClientConfig {
 
     @Bean
     public Queue loggingQueue() {
-        return new Queue("logging.queue");
+        return new Queue("log.queue");
     }
 
     @Bean
     public DirectExchange loggingExchange() {
-        return new DirectExchange("logging.exchange");
+        return new DirectExchange("log.exchange");
     }
 
     @Bean
     public Binding loggingBinding(Queue loggingQueue, DirectExchange loggingExchange) {
-        return BindingBuilder.bind(loggingQueue).to(loggingExchange).with("logging.route");
+        return BindingBuilder.bind(loggingQueue).to(loggingExchange).with("log.route");
     }
 }
 
