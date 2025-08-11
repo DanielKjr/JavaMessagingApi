@@ -9,11 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>DanielKjr</groupId>
-    <artifactId>JavaMessagingApi</artifactId>
-    <version>1.0.0</version>
-    <!--    <packaging>pom</packaging>-->
-    <name>JavaMessagingApi</name>
-    <description>JavaMessagingApi</description>
+    <artifactId>MQListener</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>MQListener</name>
+    <description>MQListener</description>
     <url/>
     <licenses>
         <license/>
@@ -27,25 +26,10 @@
         <tag/>
         <url/>
     </scm>
-    <!--    <modules>-->
-    <!--        <module>MQLoggingClient</module>-->
-    <!--        <module>MQListener</module>-->
-    <!--    </modules>-->
     <properties>
         <java.version>21</java.version>
-        <spring-ai.version>1.0.0</spring-ai.version>
     </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring-ai.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,28 +84,22 @@
             <artifactId>mqloggingclient</artifactId>
             <version>0.0.34</version>
         </dependency>
-
     </dependencies>
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/danielkjr/JavaMessagingApi</url>
-
+            <url>https://maven.pkg.github.com/DanielKjr/JavaMessagingApi</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

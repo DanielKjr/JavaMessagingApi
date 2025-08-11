@@ -1,9 +1,8 @@
-package danielkjr.javamessagingapi.MessageBroker.Clients;
+package danielkjr.mqlistener.Services;
 
 
-import danielkjr.javamessagingapi.Model.dto.MessageDto;
-
-import danielkjr.mqloggingclient.model.LogMessageDto;
+import danielkjr.mqlistener.Model.MQAction;
+import danielkjr.mqlistener.Model.StoreCommand;
 import danielkjr.mqloggingclient.nameprovider.NameProvider;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -18,23 +17,20 @@ public class RpcClient {
 
 
     private final RabbitTemplate template;
+    private final DirectExchange exchange;
     private final NameProvider nameProvider;
 
-    private final DirectExchange exchange;
-
-    public RpcClient(@Qualifier(value = "RCP")RabbitTemplate rabbitTemplate, NameProvider nameProvider, DirectExchange directExchange) {
+    public RpcClient(@Qualifier(value = "RPC")RabbitTemplate rabbitTemplate, DirectExchange directExchange, NameProvider nameProvider) {
         this.template = rabbitTemplate;
-        this.nameProvider = nameProvider;
         this.exchange = directExchange;
+        this.nameProvider = nameProvider;
     }
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
-    public void createAndDispatch(MessageDto message) {
+    public void createAndDispatch(StoreCommand cmd) {
         UUID actionId = UUID.randomUUID();
-        LogMessageDto command = new LogMessageDto(actionId.toString(), message.getMessage(),  message.getSeverity(), nameProvider.getName());
+        StoreCommand command = new StoreCommand(actionId, cmd.message(), MQAction.CREATE, nameProvider.getName(), cmd.severity());
         UUID response = (UUID) template.convertSendAndReceive(exchange.getName(), "rpc", command);
-        System.out.println(exchange.getName() + " sent to " + actionId + "with command:" + command);
-        System.out.println("Response: " + response);
     }
 
 

@@ -1,13 +1,13 @@
-//package danielkjr.javamessagingapi;
+//package danielkjr.mqlogger;
 //
 //import org.junit.jupiter.api.Test;
 //import org.springframework.boot.test.context.SpringBootTest;
 //
 //@SpringBootTest
-//class JavaMessagingApiApplicationTests {
+//class MqLoggerApplicationTests {
 //
-//    @Test
-//    void contextLoads() {
-//    }
+//	@Test
+//	void contextLoads() {
+//	}
 //
 //}

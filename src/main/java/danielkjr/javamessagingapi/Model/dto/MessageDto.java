@@ -1,6 +1,7 @@
 package danielkjr.javamessagingapi.Model.dto;
 
-import danielkjr.javamessagingapi.Model.LoggingSeverity;
+
+import danielkjr.mqloggingclient.model.LoggingSeverity;
 
 public record MessageDto(String message, LoggingSeverity severity) {
 

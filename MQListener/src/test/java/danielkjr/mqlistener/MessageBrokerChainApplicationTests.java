@@ -1,13 +1,13 @@
-//package danielkjr.javamessagingapi;
+//package danielkjr.mqlistener;
 //
 //import org.junit.jupiter.api.Test;
 //import org.springframework.boot.test.context.SpringBootTest;
 //
 //@SpringBootTest
-//class JavaMessagingApiApplicationTests {
+//class MQListenerApplicationTests {
 //
-//    @Test
-//    void contextLoads() {
-//    }
+////    @Test
+////    void contextLoads() {
+////    }
 //
 //}
