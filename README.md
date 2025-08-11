@@ -1,9 +1,3 @@
-Another repository for the purpose of learning java.
-
-Spring boot API with docker+rabbitMQ messaging
-
-Message broker can insert into table with JPA currently, not pretty but functional
-
 Sprint boot api for simple triggering of endpoint through Postman.
 
 API sends a message to MQListener that sends a log to MQLogger, using shared functionality from the MQLoggingClient package and then saves the entry.
