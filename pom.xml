@@ -98,15 +98,13 @@
         <dependency>
             <groupId>danielkjr.mqloggingclient</groupId>
             <artifactId>mqloggingclient</artifactId>
-            <version>0.0.34</version>
+            <version>0.0.41</version>
         </dependency>
-
     </dependencies>
     <repositories>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/danielkjr/JavaMessagingApi</url>
-
         </repository>
     </repositories>
     <build>

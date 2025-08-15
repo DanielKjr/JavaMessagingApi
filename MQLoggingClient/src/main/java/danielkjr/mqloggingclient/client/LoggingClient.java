@@ -15,7 +15,6 @@ public class LoggingClient {
     public LoggingClient(@Qualifier(value = "Logging")RabbitTemplate rabbitLogTemplate, @Qualifier("Logging") RabbitLoggingProperties rabbitLoggingProperties) {
         this.rabbitLogTemplate = rabbitLogTemplate;
         this.props = rabbitLoggingProperties;
-        System.out.println(rabbitLoggingProperties.getQueue() + rabbitLoggingProperties.getExchange());
     }
 
 

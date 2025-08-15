@@ -20,7 +20,7 @@ public class RpcClient {
     private final DirectExchange exchange;
     private final NameProvider nameProvider;
 
-    public RpcClient(@Qualifier(value = "RPC")RabbitTemplate rabbitTemplate, DirectExchange directExchange, NameProvider nameProvider) {
+    public RpcClient(@Qualifier(value = "RPC")RabbitTemplate rabbitTemplate,@Qualifier("Logging.Direct") DirectExchange directExchange, NameProvider nameProvider) {
         this.template = rabbitTemplate;
         this.exchange = directExchange;
         this.nameProvider = nameProvider;

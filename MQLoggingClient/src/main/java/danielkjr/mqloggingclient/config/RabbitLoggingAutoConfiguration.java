@@ -7,8 +7,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,17 +23,20 @@ public class RabbitLoggingAutoConfiguration {
     }
 
     @Bean
+    @Qualifier(value = "Logging.Queue")
     public Queue loggingQueue(RabbitLoggingProperties props) {
         return new Queue(props.getQueue(), true);
     }
 
     @Bean
-    public TopicExchange loggingExchange(RabbitLoggingProperties props) {
-        return new TopicExchange(props.getExchange(), true, false);
+    @Qualifier(value = "Logging.Direct")
+    public DirectExchange loggingExchange(RabbitLoggingProperties props) {
+        return new DirectExchange(props.getExchange(), true, false);
     }
 
     @Bean
-    public Binding loggingBinding(Queue loggingQueue, TopicExchange loggingExchange, RabbitLoggingProperties props) {
+    @Qualifier(value = "Logging.Binding")
+    public Binding loggingBinding(Queue loggingQueue, DirectExchange loggingExchange, RabbitLoggingProperties props) {
         return BindingBuilder.bind(loggingQueue).to(loggingExchange).with(props.getRoutingKey());
     }
 
@@ -53,7 +54,7 @@ public class RabbitLoggingAutoConfiguration {
         return template;
     }
     @Bean
-    public LoggingClient loggingClient(RabbitTemplate rabbitLogTemplate, RabbitLoggingProperties props, RabbitProperties rabbitProps) {
+    public LoggingClient loggingClient(RabbitTemplate rabbitLogTemplate, RabbitLoggingProperties props) {
         return new LoggingClient(rabbitLogTemplate, props);
     }
 

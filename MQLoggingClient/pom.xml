@@ -10,7 +10,7 @@
     </parent>
     <groupId>danielkjr.mqloggingclient</groupId>
     <artifactId>mqloggingclient</artifactId>
-    <version>0.0.34</version>
+    <version>0.0.41</version>
     <name>MQLoggingClient</name>
     <description>MQLoggingClient</description>
 

@@ -3,8 +3,6 @@ package danielkjr.mqlogger.RabbitConfigs;
 
 import danielkjr.mqlogger.Services.LoggingListener;
 import danielkjr.mqloggingclient.config.RabbitLoggingProperties;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -23,16 +21,6 @@ public class LoggingConfig {
 
     public LoggingConfig(RabbitLoggingProperties props) {
         this.props = props;
-    }
-
-    @Bean
-    public TopicExchange logExchange() {
-        return new TopicExchange(props.getExchange());
-    }
-
-    @Bean
-    public Queue queue() {
-        return new Queue(props.getQueue());
     }
 
     @Bean
@@ -59,17 +47,4 @@ public class LoggingConfig {
         rabbitTemplate.setReplyTimeout(Duration.ofSeconds(5).toMillis());
         return rabbitTemplate;
     }
-
-//    @Bean
-//    public MessageConverter jacksonMessageConverter() {
-//        Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
-//        DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
-//        Map<String, Class<?>> idClassMapping = new HashMap<>();
-
-//        idClassMapping.put("danielkjr.mqlistener.mqloggingclient.model.LogMessageDto", danielkjr.mqlogger.Model.dto.LogMessageDto.class);
-//        idClassMapping.put("danielkjr.mqloggingclient.Model.LoggingSeverity", danielkjr.mqlogger.Model.LoggingSeverity.class);
-//        typeMapper.setIdClassMapping(idClassMapping);
-//        converter.setJavaTypeMapper(typeMapper);
-//        return converter;
-//    }
 }
